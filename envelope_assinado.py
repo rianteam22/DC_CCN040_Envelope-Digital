@@ -19,13 +19,13 @@ def criar_envelope_assinado(arquivo_claro, arquivo_chave_publica_destinatario,
     # Gerar chave simétrica temporária/aleatória e IV
     if algoritmo_simetrico == 'AES':
         chave_simetrica = os.urandom(tamanho_chave_simetrica // 8)
-        iv = os.urandom(16)  # IV size for AES is 16 bytes
+        iv = os.urandom(16)  # O tamanho do IV para o AES é de 16 bytes
     elif algoritmo_simetrico == '3DES':
         chave_simetrica = os.urandom(24)
-        iv = os.urandom(8) # 24 bytes for 3DES
+        iv = os.urandom(8) # O tamanho do IV para o 3DES é de 8 bytes
     elif algoritmo_simetrico == 'RC4':
         chave_simetrica = os.urandom(tamanho_chave_simetrica // 8)
-        iv = os.urandom(0)  # RC4 does not use an IV
+        iv = os.urandom(0)  # O RC4 não usa um IV
     else:
         raise ValueError("Algoritmo simetrico invalido")
         
@@ -95,7 +95,7 @@ def criar_envelope_assinado(arquivo_claro, arquivo_chave_publica_destinatario,
 
 def abrir_envelope_assinado(arquivo_envelope_assinado, arquivo_chave_secao_privada, 
                             arquivo_chave_privada_destinatario, arquivo_chave_publica_remetente, 
-                            algoritmo_simetrico, tamanho_chave_simetrica, nome_arquivo_saida):
+                            algoritmo_simetrico, nome_arquivo_saida):
     
     print("\nInicio abrir_envelope_assinado\n")
     
@@ -125,8 +125,8 @@ def abrir_envelope_assinado(arquivo_envelope_assinado, arquivo_chave_secao_priva
     print(f"Envelope Assinado: {envelope_assinado}\n")
 
     # Separar assinatura, IV e texto cifrado
-    assinatura = envelope_assinado[:tamanho_chave_simetrica]  # Assumindo que o tamanho da assinatura é 256 bytes
-    dados_cifrados = envelope_assinado[tamanho_chave_simetrica:]
+    assinatura = envelope_assinado[:256]
+    dados_cifrados = envelope_assinado[256:]
     
     print(f"Assinatura: {assinatura}\n\nDados Cifrados: {dados_cifrados}\n")
 
@@ -158,8 +158,8 @@ def abrir_envelope_assinado(arquivo_envelope_assinado, arquivo_chave_secao_priva
         )
         print("Assinatura válida.")
     except Exception as e:
-        print("Assinatura inválida:", str(e))
-        return
+        raise ValueError("Assinatura inválida")
+
     
     chave_simetrica = chave_privada_destinatario.decrypt(
         chave_simetrica_cifrada,

@@ -15,17 +15,23 @@ class App:
         self.text_entry.size
         self.label_algorithm = tk.Label(root, text="Selecione o algoritmo simétrico:")
         self.algorithm_var = tk.StringVar()
-        self.algorithm_var.set("AES")  # Default algorithm
+        self.algorithm_var.set("AES") 
         self.algorithm_menu = tk.OptionMenu(root, self.algorithm_var, "AES", "3DES", "RC4")
 
         self.encrypt_button = tk.Button(root, text="Criptografar e assinar", command=self.criptografar_e_assinar)
         self.decrypt_button = tk.Button(root, text="Descriptografar e verificar", command=self.descriptografar_e_verificar)
+        
+        self.label_key_size = tk.Label(root, text="Tamanho da chave simétrica:")
+        self.key_size_entry = tk.Entry(root)
+        self.key_size_entry.insert(0, "256") 
 
         # Layout
         self.label_text.pack(pady=5)
         self.text_entry.pack(pady=5)
         self.label_algorithm.pack(pady=5)
         self.algorithm_menu.pack(pady=5)
+        self.label_key_size.pack(pady=5)
+        self.key_size_entry.pack(pady=5)
         self.encrypt_button.pack(pady=10)
         self.decrypt_button.pack(pady=10)
 
@@ -47,7 +53,7 @@ class App:
                 gerar_par_chaves('chave_privada_destinatario.pem', 'chave_publica_destinatario.pem')
 
                 algoritmo_simetrico = self.algorithm_var.get()
-                tamanho_chave_simetrica = 256
+                tamanho_chave_simetrica = int(self.key_size_entry.get()) 
 
                 criar_envelope_assinado(file_path, 'chave_publica_destinatario.pem',
                                         'chave_privada_remetente.pem', algoritmo_simetrico, tamanho_chave_simetrica,
@@ -63,9 +69,10 @@ class App:
 
         if file_path:
             try:
+                algoritmo_simetrico = self.algorithm_var.get()
+                
                 abrir_envelope_assinado(file_path, 'chave_secao_cifrada.pem', 'chave_privada_destinatario.pem',
-                                        'chave_publica_remetente.pem', self.algorithm_var.get(), 256,
-                                        'arquivo_decifrado.txt')
+                                        'chave_publica_remetente.pem', algoritmo_simetrico, 'arquivo_decifrado.txt')
 
                 self.show_message("A descriptografia e a verificação foram bem-sucedidas!")
 
