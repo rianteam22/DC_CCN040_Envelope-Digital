@@ -3,48 +3,47 @@
 #### Professor da disciplina: Carlos André Batista de Carvalho 
 #### Trabalho 01 – Implementação: Envelope Digital Assinado
 
-# Exemplo de Envelope Criptografado e Assinado
+# Envelope Digital Assinado
 
-Este programa em Python demonstra a criação e abertura de envelopes criptografados e assinados usando uma combinação de criptografia simétrica e assimétrica. O programa consiste em três scripts principais:
+Este é um programa simples implementado em Python usando a biblioteca Tkinter e o módulo `cryptography`. Ele permite a criação de um envelope digital assinado, que envolve a criptografia e assinatura de um texto, e a posterior abertura e verificação desse envelope.
 
-1. **`gerar_par_chaves.py`**: Gera um par de arquivos de chave RSA tanto para o remetente quanto para o destinatário.
+## Funcionalidades
 
-2. **`envelope_assinado.py`**: Cria e abre envelopes assinados. Ele criptografa um arquivo com uma chave simétrica, assina os dados criptografados com uma chave privada e, em seguida, envia os dados criptografados e assinados juntamente com as informações necessárias para o destinatário descriptografar.
+1. **Criptografar e Assinar:**
+   - Insira um texto no campo designado.
+   - Escolha um algoritmo de criptografia simétrica (AES, 3DES, ou RC4).
+   - Clique no botão "Criptografar e assinar" para gerar chaves, salvar o texto em um arquivo, criptografar e assinar o arquivo, e salvar a chave simétrica cifrada e o IV.
 
-3. **`main.py`**: Utiliza as funções dos scripts acima para demonstrar todo o processo.
+2. **Descriptografar e Verificar:**
+   - Clique no botão "Descriptografar e verificar" para selecionar um arquivo criptografado e assinado.
+   - O programa tentará descriptografar o arquivo e verificar a assinatura, usando as chaves privadas e públicas adequadas.
+
+3. **Mensagens Pop-up:**
+   - Mensagens informativas e de erro são exibidas através do método `messagebox` do Tkinter.
+
+4. **Geração de Chaves e Operações Criptográficas:**
+   - As operações criptográficas são realizadas por funções contidas nos scripts `gerar_par_chaves` e `envelope_assinado`.
+
+5. **Algoritmo Padrão:**
+   - O algoritmo simétrico padrão é definido como AES.
 
 ## Uso
 
-1. **Gerar Pares de Chaves:**
+1. Certifique-se de ter a biblioteca `cryptography` instalada.
+   ```bash
+   pip install cryptography
+   ```
 
-    ```bash
-    python gerar_par_chaves.py
-    ```
+2. Execute o script main.
+   ```bash
+   python main.py
+   ```
 
-    Isso gerará pares de chaves tanto para o remetente quanto para o destinatário e os salvará como `chave_privada_remetente.pem`, `chave_publica_remetente.pem`, `chave_privada_destinatario.pem` e `chave_publica_destinatario.pem`.
+3. Siga as instruções na interface gráfica para criptografar, assinar, descriptografar e verificar seus envelopes digitais.
 
-2. **Criar Envelope Assinado:**
+## Observações
 
-    ```bash
-    python main.py
-    ```
+- Certifique-se de ter as permissões adequadas para acessar os arquivos de chave privada e pública.
+- Mantenha os scripts `gerar_par_chaves.py` e `envelope_assinado.py` no mesmo diretório que o script `main.py`, ou forneça os caminhos corretos se estiverem em diretórios diferentes.
 
-    Isso criará um envelope assinado criptografando um arquivo de exemplo (`arquivo_claro.txt`) com uma chave simétrica e assinando os dados criptografados com a chave privada do remetente. Os dados criptografados e a chave simétrica criptografada serão salvos como `envelope_assinado.enc` e `chave_secao_cifrada.pem`, respectivamente.
-
-3. **Abrir Envelope Assinado:**
-
-    ```bash
-    python main.py
-    ```
-
-    Isso abrirá o envelope assinado usando a chave privada do destinatário e a chave pública do remetente. Os dados descriptografados serão salvos como `arquivo_decifrado.txt`.
-
-## Dependências
-
-- [cryptography](https://cryptography.io/en/latest/)
-
-Instale as dependências necessárias usando:
-
-```bash
-pip install cryptography
-```
+Este programa foi desenvolvido como parte de um trabalho prático e destina-se a fins educacionais. 
